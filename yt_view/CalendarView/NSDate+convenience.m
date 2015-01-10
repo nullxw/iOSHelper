@@ -178,14 +178,6 @@
     return date;
 }
 
-//秒 为单位
-+ (NSDate *)chagetimesShortForDate:(NSString *)timesTamp{
-    NSTimeInterval a = timesTamp.doubleValue;
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:a];
-    
-    return date;
-}
-
 //yyyy mm dd
 + (NSDate *)dateWithString:(NSString *)string{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -210,12 +202,11 @@
 - (NSString *)chageShortString{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.timeZone = [NSTimeZone localTimeZone];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
     
     NSString *string = [dateFormatter stringFromDate:self];
     return string;
 }
-
 
 //yyyymmdd hhmmss
 - (NSString *)chageLongString{

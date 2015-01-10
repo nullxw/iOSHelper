@@ -20,13 +20,12 @@
 typedef NS_ENUM(NSInteger, YTMarkStyle){
     markRound,          //圆形
     markRect,           //方形
-    markRoundBorder,   //圆框
+    markRoundBorder,    //圆框
     markStyleNo
 };
 
-
 @protocol YTCalendarViewDelegate;
-
+@class ClockInModel;
 @interface YTCalendarView : UIView {
     
     BOOL isAnimating;
@@ -35,7 +34,6 @@ typedef NS_ENUM(NSInteger, YTMarkStyle){
 }
 
 @property (nonatomic, assign) id <YTCalendarViewDelegate> delegate;
-
 @property (nonatomic, assign) BOOL hasBorder;              //默认：有 边框
 @property (nonatomic, strong) UIColor *backColor;           //默认： 白色 背景颜色
 
@@ -57,8 +55,6 @@ typedef NS_ENUM(NSInteger, YTMarkStyle){
 @property (nonatomic, strong) NSDate *maxDate;          //默认 没有最大限制
 @property (nonatomic, strong) NSDate *minDate;          //默认 没有最小限制
 
-//界面重置
--(void)reset;
 
 -(void)markDates:(NSArray *)dates;
 
@@ -75,7 +71,7 @@ typedef NS_ENUM(NSInteger, YTMarkStyle){
 
 -(void)calendarView:(YTCalendarView *)calendarView switchedToMonth:(NSInteger)month targetHeight:(CGFloat)targetHeight animated:(BOOL)animated;
 
--(void)calendarView:(YTCalendarView *)calendarView dateSelected:(NSDate *)date;
+-(void)calendarView:(YTCalendarView *)calendarView dateSelected:(NSDate *)date clockModel:(ClockInModel *)model;
 
 @end
 
@@ -107,6 +103,11 @@ typedef NS_ENUM(NSInteger, YTMarkState){
 @end
 
 
+#pragma mark -
+@interface WeekDayBar : UIView
+
+
+@end
 
 
 

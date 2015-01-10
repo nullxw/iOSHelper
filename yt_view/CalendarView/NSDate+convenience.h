@@ -52,9 +52,7 @@
 - (NSString *)timeforhour;
 
 -(NSString *)chagetimestamp;    //毫秒为单位
-
 + (NSDate *)chagetimesTampForDate:(NSString *)timesTamp; //毫秒为单位
-+ (NSDate *)chagetimesShortForDate:(NSString *)timesTamp; //秒 为单位
 
 - (NSString *)stringForTimesTampWithS;     //秒为单位
 
