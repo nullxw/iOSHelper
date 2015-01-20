@@ -18,10 +18,13 @@
         相册，相机都是使用 模态 视图。
  */
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "YTMacro.h"
-#import "APIMacro.h"
+
+static NSString *kPhotoFinshObserver  = @"kPhotoFinshObserver";
+static NSString *kPhotoFinshImage     = @"kPhotoFinshImage";
+
 
 @interface ImhtGetPhoto : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
@@ -48,7 +51,7 @@
  *  @param  finsh  添加相片结束时候的事件 block
  *  @param  error  添加相片结束时候的错误 block
 */
-- (instancetype)initWithViewController:(UIViewController*)vc andFinsh:(void(^)(id))finsh andError:(void (^)(void))error;
+- (instancetype)initWithViewController:(UIViewController*)vc andError:(void (^)(void))error;
 
 
 /**

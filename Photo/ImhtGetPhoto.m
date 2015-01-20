@@ -10,7 +10,6 @@
 
 @interface ImhtGetPhoto ()
 
-@property (nonatomic, copy) VoidBlock_id finshBlock;
 @property (nonatomic, copy) VoidBlock errorBlock;
 
 @end
@@ -21,16 +20,16 @@
 - (void)dealloc
 {
     DeallocLog
+    self.errorBlock = nil;
 }
 
-- (id)initWithViewController:(UIViewController*)vc andFinsh:(void(^)(id))finsh andError:(void (^)(void))error
+- (id)initWithViewController:(UIViewController*)vc andError:(void (^)(void))error
 {
     self = [super init];
     if (self) {
-        self.finshBlock = finsh;
         self.errorBlock = error;
         self.viewController = vc;
-        self.cutScale = 0.2;
+        self.cutScale = 0.5;
         
     }
     return self;
@@ -53,15 +52,14 @@
 
 - (void)closeMenu
 {
-    [self.viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 //打开相册
 - (void)showImagePicker
 {    
-
     UIImagePickerController *pick = [[UIImagePickerController alloc] init];
-    
+    pick.allowsEditing = YES;
     [pick setDelegate:self];
     
     [self.viewController presentViewController:pick animated:YES completion:nil];
@@ -78,7 +76,9 @@
         //设置拍照后的图片可被编辑
         picker.allowsEditing = YES;
         picker.sourceType = sourceType;
-        [self.viewController.navigationController presentViewController:picker animated:YES completion:nil];
+        
+        [self.viewController presentViewController:picker animated:YES completion:nil];
+
     }else
     {
         if (TARGET_IPHONE_SIMULATOR) {
@@ -87,16 +87,13 @@
     }
 }
 
-
 #pragma mark- uiactionsheet delegate method
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     //呼出的菜单按钮点击后的响应
     if (buttonIndex == actionSheet.cancelButtonIndex)
     {
-        NSLog(@"取消");
     }
-    
     switch (buttonIndex)
     {
     case 0:  //打开照相机拍照
@@ -118,14 +115,11 @@
 #pragma mark- UIImagePickerController Delegate method
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
-    __block NSData *data = UIImageJPEGRepresentation(image, self.cutScale);
+    UIImage *image = [info valueForKey:UIImagePickerControllerEditedImage];
     
-    NSLog(@"%ld KB", (unsigned long)data.length / 1024);
-
-    if (self.finshBlock) {
-        self.finshBlock(data);
-    }
+    NSDictionary *postdic = [NSDictionary dictionaryWithObject:image forKey:kPhotoFinshImage];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPhotoFinshObserver object:nil userInfo:postdic];
     
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
